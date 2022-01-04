@@ -1,8 +1,10 @@
-const express = require("express");
-const cors = require("cors");
-const products = require("../backend/data/products");
-const app = express();
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import products from "../backend/data/products.js";
 
+dotenv.config();
+const app = express();
 app.use(cors());
 
 app.get("/", (req, res) => {
@@ -18,4 +20,9 @@ app.get("/api/products/:id", (req, res) => {
   res.json(product);
 });
 
-app.listen(5000, console.log("Server running on Port 5000"));
+const PORT = process.env.PORT;
+
+app.listen(
+  PORT,
+  console.log(`Server running in ${process.env.NODE_ENV} mode on Port ${PORT}`)
+);
