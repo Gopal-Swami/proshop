@@ -4,7 +4,9 @@
   "description": "MERN shopping App",
   "main": "server.js",
   "scripts": {
-    "start": "node backend/server"
+    "start": "node backend/server",
+    "server":"nodemon backend/server",
+    "client":"npm start --prefix frontend"
   },
   "repository": {
     "type": "git",
@@ -17,6 +19,11 @@
   },
   "homepage": "https://github.com/Gopal-Swami/proshop#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "concurrently": "^7.0.0",
+    "nodemon": "^2.0.15"
   }
 }
