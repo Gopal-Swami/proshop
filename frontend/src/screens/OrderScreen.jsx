@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import {
-  Form,
-  Button,
-  Row,
-  Col,
-  ListGroup,
-  Image,
-  Card,
-} from "react-bootstrap";
+import { Link, useParams } from "react-router-dom";
+import { Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
@@ -17,7 +9,6 @@ import axios from "axios";
 import { PayPalButton } from "react-paypal-button-v2";
 import { ORDER_PAY_RESET } from "../constants/orderConstants";
 const OrderScreen = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const params = useParams();
   const orderId = params.id;
