@@ -1,15 +1,15 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
-import { getUserDetails, updateUser } from "../actions/userActions";
-import { USER_UPDATE_RESET } from "../constants/userConstants";
+import { listProductDetails, updateProduct } from "../actions/productActions";
+import { PRODUCT_UPDATE_RESET } from "../constants/productConstants";
 
 const ProductEditScreen = () => {
-  const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const params = useParams();
@@ -21,34 +21,87 @@ const ProductEditScreen = () => {
   const [brand, setBrand] = useState("");
   const [image, setImage] = useState("");
   const [category, setCategory] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
+  const productUpdate = useSelector((state) => state.productUpdate);
+  const {
+    loading: loadingUpdate,
+    error: errorUpdate,
+    success: successUpdate,
+  } = productUpdate;
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(updateUser({ _id: userId, name, email, isAdmin }));
+    dispatch(
+      updateProduct({
+        _id: productId,
+        name,
+        brand,
+        image,
+        category,
+        countInStock,
+        description,
+        price,
+      })
+    );
   };
 
   useEffect(() => {
-    if (!product.name || product._id !== productId) {
-      dispatch(listProductDetails(productId));
+    if (successUpdate) {
+      dispatch({ type: PRODUCT_UPDATE_RESET });
+      navigate("/admin/productlist");
     } else {
-      setName(user.name);
-      setEmail(user.email);
-      setIsAdmin(user.isAdmin);
+      if (!product.name || product._id !== productId) {
+        dispatch(listProductDetails(productId));
+      } else {
+        setName(product.name);
+        setDescription(product.description);
+        setCountInStock(product.countInStock);
+        setPrice(product.price);
+        setBrand(product.brand);
+        setImage(product.image);
+        setCategory(product.category);
+      }
     }
-  }, [dispatch, user, userId, successUpdate, navigate]);
+  }, [dispatch, product, productId, navigate, successUpdate]);
+
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", file);
+    setUploading(true);
+
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      const { data } = await axios.post(
+        "http://localhost:5000/api/upload",
+        formData,
+        config
+      );
+      setImage(data);
+      setUploading(false);
+    } catch (error) {
+      console.log(error);
+      setUploading(false);
+    }
+  };
   return (
     <>
-      <Link to="/admin/userlist" className="btn btn-light my-3">
+      <Link to="/admin/productlist" className="btn btn-light my-3">
         Back
       </Link>
 
       <FormContainer>
-        <h1>Edit User</h1>
+        <h1>Edit Product</h1>
         {loadingUpdate && <Loader />}
         {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
+
         {loading ? (
           <Loader />
         ) : error ? (
@@ -64,22 +117,65 @@ const ProductEditScreen = () => {
                 onChange={(e) => setName(e.target.value)}
               ></Form.Control>
             </Form.Group>
-            <Form.Group controlId="email">
-              <Form.Label>Email Address : </Form.Label>
+            <Form.Group controlId="price">
+              <Form.Label>Price : </Form.Label>
               <Form.Control
-                type="email"
-                placeholder="Enter Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="number"
+                placeholder="Enter price"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
               ></Form.Control>
             </Form.Group>
-            <Form.Group controlId="isadmin">
-              <Form.Check
-                type="checkbox"
-                label="Is Admin"
-                checked={isAdmin}
-                onChange={(e) => setIsAdmin(e.target.checked)}
-              ></Form.Check>
+            <Form.Group controlId="image">
+              <Form.Label>Image : </Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Image Url"
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
+              ></Form.Control>
+              <Form.Control
+                type="file"
+                label="Choose file"
+                onChange={uploadFileHandler}
+              ></Form.Control>
+              {uploading && <Loader />}
+            </Form.Group>
+            <Form.Group controlId="brand">
+              <Form.Label>Brand : </Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Brand "
+                value={brand}
+                onChange={(e) => setBrand(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            <Form.Group controlId="countInStock">
+              <Form.Label>Count In Stock : </Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Enter Count In Stock"
+                value={countInStock}
+                onChange={(e) => setCountInStock(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            <Form.Group controlId="category">
+              <Form.Label>Category : </Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter category "
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            <Form.Group controlId="description">
+              <Form.Label>Description : </Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter description "
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              ></Form.Control>
             </Form.Group>
 
             <Button type="submit" variant="primary">
