@@ -84,7 +84,9 @@ const ProductEditScreen = () => {
         formData,
         config
       );
-      setImage(data);
+      const newPathName = data.split("\\")[0] + "/" + data.split("\\")[1];
+
+      setImage(newPathName);
       setUploading(false);
     } catch (error) {
       console.log(error);
