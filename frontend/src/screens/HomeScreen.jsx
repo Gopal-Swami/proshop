@@ -1,15 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 import Product from "../components/Product";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import Paginate from "../components/Paginate";
 import ProductCarousel from "../components/ProductCarousel";
 import { listProducts } from "../actions/productActions";
-import { useParams } from "react-router-dom";
-import { Helmet } from "react-helmet";
-
+import { useParams, Link } from "react-router-dom";
+import Meta from "../components/Meta";
 const HomeScreen = () => {
   const params = useParams();
   const keyword = params.keyword;
@@ -23,12 +22,16 @@ const HomeScreen = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Welcome To Proshop | Home</title>
-        <meta name="description" content="We Sell Best Products Here" />
-        <meta name="keyword" content="Electronics at cheap" />
-      </Helmet>
-      {!keyword && <ProductCarousel />}
+      <Meta />
+      {!keyword ? (
+        <ProductCarousel />
+      ) : (
+        <Link to="/">
+          <Button variant="light" className="btn">
+            Go Back
+          </Button>
+        </Link>
+      )}
       <h1>Latest Products</h1>
       {loading ? (
         <Loader />

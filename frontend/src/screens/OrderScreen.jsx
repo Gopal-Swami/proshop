@@ -16,6 +16,7 @@ import {
   ORDER_PAY_RESET,
   ORDER_DELIVER_RESET,
 } from "../constants/orderConstants";
+import { CART_RESET_METHOD } from "../constants/cartConstants";
 const OrderScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -60,6 +61,7 @@ const OrderScreen = () => {
     if (!order || successPay || successDeliver) {
       dispatch({ type: ORDER_PAY_RESET });
       dispatch({ type: ORDER_DELIVER_RESET });
+      dispatch({ type: CART_RESET_METHOD });
       dispatch(getOrderDetails(orderId));
     } else if (!order.isPaid) {
       if (!window.paypal) {
@@ -195,16 +197,33 @@ const OrderScreen = () => {
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
+                {order.isPaid && (
+                  <Link to="/profile">
+                    <Button className="btn w-100">Back</Button>
+                  </Link>
+                )}
                 {!order.isPaid && (
                   <ListGroup.Item>
                     {loadingPay && <Loader />}
                     {!sdkReady ? (
                       <Loader />
                     ) : (
-                      <PayPalButton
-                        amount={order.totalPrice}
-                        onSuccess={successPaymentHanlder}
-                      />
+                      <>
+                        <PayPalButton
+                          amount={order.totalPrice}
+                          onSuccess={successPaymentHanlder}
+                        />
+                        {userInfo && userInfo.isAdmin && (
+                          <Link to="/admin/orderlist">
+                            <Button className="btn w-100">Back</Button>
+                          </Link>
+                        )}
+                        {userInfo && !userInfo.isAdmin && (
+                          <Link to="/profile">
+                            <Button className="btn w-100">Back</Button>
+                          </Link>
+                        )}
+                      </>
                     )}
                   </ListGroup.Item>
                 )}
