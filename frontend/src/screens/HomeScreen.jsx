@@ -8,6 +8,7 @@ import Paginate from "../components/Paginate";
 import ProductCarousel from "../components/ProductCarousel";
 import { listProducts } from "../actions/productActions";
 import { useParams } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const HomeScreen = () => {
   const params = useParams();
@@ -22,6 +23,11 @@ const HomeScreen = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Welcome To Proshop | Home</title>
+        <meta name="description" content="We Sell Best Products Here" />
+        <meta name="keyword" content="Electronics at cheap" />
+      </Helmet>
       {!keyword && <ProductCarousel />}
       <h1>Latest Products</h1>
       {loading ? (
