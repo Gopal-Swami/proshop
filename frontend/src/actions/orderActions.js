@@ -17,8 +17,8 @@ import {
   ORDER_DELIVER_REQUEST,
   ORDER_DELIVER_SUCCESS,
   ORDER_DELIVER_FAIL,
-} from "../constants/orderConstants";
-import axios from "axios";
+} from '../constants/orderConstants';
+import axios from 'axios';
 
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
@@ -31,7 +31,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
     } = getState();
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
@@ -97,7 +97,7 @@ export const payOrder =
       } = getState();
       const config = {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
