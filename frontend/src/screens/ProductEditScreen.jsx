@@ -1,26 +1,26 @@
-import axios from "axios";
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { Form, Button } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import Message from "../components/Message";
-import Loader from "../components/Loader";
-import FormContainer from "../components/FormContainer";
-import { listProductDetails, updateProduct } from "../actions/productActions";
-import { PRODUCT_UPDATE_RESET } from "../constants/productConstants";
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Form, Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import Message from '../components/Message';
+import Loader from '../components/Loader';
+import FormContainer from '../components/FormContainer';
+import { listProductDetails, updateProduct } from '../actions/productActions';
+import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
 
 const ProductEditScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const params = useParams();
   const productId = params.id;
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
   const [countInStock, setCountInStock] = useState(0);
   const [price, setPrice] = useState(0);
-  const [brand, setBrand] = useState("");
-  const [image, setImage] = useState("");
-  const [category, setCategory] = useState("");
+  const [brand, setBrand] = useState('');
+  const [image, setImage] = useState('');
+  const [category, setCategory] = useState('');
   const [uploading, setUploading] = useState(false);
 
   const productDetails = useSelector((state) => state.productDetails);
@@ -51,7 +51,7 @@ const ProductEditScreen = () => {
   useEffect(() => {
     if (successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_RESET });
-      navigate("/admin/productlist");
+      navigate('/admin/productlist');
     } else {
       if (!product.name || product._id !== productId) {
         dispatch(listProductDetails(productId));
@@ -70,21 +70,21 @@ const ProductEditScreen = () => {
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0];
     const formData = new FormData();
-    formData.append("image", file);
+    formData.append('image', file);
     setUploading(true);
 
     try {
       const config = {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
       };
       const { data } = await axios.post(
-        "http://localhost:5000/api/upload",
+        'http://localhost:5000/api/upload',
         formData,
         config
       );
-      const newPathName = data.split("\\")[0] + "/" + data.split("\\")[1];
+      const newPathName = data.split('\\')[0] + '/' + data.split('\\')[1];
 
       setImage(newPathName);
       setUploading(false);

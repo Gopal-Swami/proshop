@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Row,
   Col,
@@ -9,20 +9,20 @@ import {
   Card,
   Button,
   Form,
-} from "react-bootstrap";
-import Rating from "../components/Rating";
+} from 'react-bootstrap';
+import Rating from '../components/Rating';
 import {
   listProductDetails,
   createProductReview,
-} from "../actions/productActions";
-import Loader from "../components/Loader";
-import Message from "../components/Message";
-import { PRODUCT_CREATE_REVIEW_RESET } from "../constants/productConstants";
+} from '../actions/productActions';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
+import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants';
 
 const ProductScreen = ({ history, match }) => {
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState('');
   const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -37,9 +37,9 @@ const ProductScreen = ({ history, match }) => {
 
   useEffect(() => {
     if (successProductReview) {
-      alert("Review Added !");
+      alert('Review Added !');
       setRating(0);
-      setComment("");
+      setComment('');
     }
     dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
     dispatch(listProductDetails(params.id));
@@ -66,7 +66,7 @@ const ProductScreen = ({ history, match }) => {
         <>
           <Row>
             <Col md={6}>
-              <Image src={product.image} alt={product.name} fluid />
+              <Image src={product.image} alt={product.image} fluid />
             </Col>
             <Col md={3}>
               <ListGroup variant="flush">
@@ -100,7 +100,7 @@ const ProductScreen = ({ history, match }) => {
                     <Row>
                       <Col>Status :</Col>
                       <Col>
-                        {product.countInStock > 0 ? "In Stock" : "Out Of Stock"}
+                        {product.countInStock > 0 ? 'In Stock' : 'Out Of Stock'}
                       </Col>
                     </Row>
                   </ListGroup.Item>
@@ -131,7 +131,7 @@ const ProductScreen = ({ history, match }) => {
                       className="btn btn-block"
                       type="button"
                       disabled={product.countInStock === 0}
-                      style={{ width: "100%" }}
+                      style={{ width: '100%' }}
                       onClick={addToCartHandler}
                     >
                       Add To Cart

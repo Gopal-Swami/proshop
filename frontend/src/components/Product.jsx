@@ -1,7 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Card } from "react-bootstrap";
-import Rating from "./Rating";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Card } from 'react-bootstrap';
+import Rating from './Rating';
 const Product = ({ product }) => {
   return (
     <Card className="my-3 p-3 rounded">
@@ -9,9 +9,9 @@ const Product = ({ product }) => {
         <Card.Img src={product.image} variant="top" />
       </Link>
       <Card.Body>
-        <Link to={`/product/${product._id}`} style={{ textDecoration: "none" }}>
+        <Link to={`/product/${product._id}`} style={{ textDecoration: 'none' }}>
           <Card.Title as="div">
-            <strong>{product.name}</strong>
+            <strong>{product.name.substring(0, 50)}</strong>
           </Card.Title>
         </Link>
 
